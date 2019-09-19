@@ -1,11 +1,16 @@
-﻿@model List<MvcApplicatioTest.Models.PhotoFlickr>
+@model List<MvcApplicatioTest.Models.PhotoFlickr>
 
 @foreach (var item in Model)
 {
-    <div id=@item.PhotoId style="background-color: #F3F3F3; margin-bottom: 30px;">
-        <div style="padding-left: 30px; font-size: 18px;">@item.Title</div>
-        <img class="displayed" src=@item.MediumUrl />
-        <div style="padding-left: 30px; font-size: 18px;">@item.OwnerName</div>
-        <div style="padding-left: 30px; font-size: 18px;">@item.DateTaken</div>
-    </div>
+    <li>
+            <figure id=@item.PhotoId>
+                <img src=@item.MediumUrl alt=@item.Title>
+                <figcaption>
+                    <h3>@item.Title</h3> 
+                    <span>@item.OwnerName</span>
+                    <p class="description">@item.DateTaken</p>
+                    <a href="#">Visit!</a>
+                </figcaption>
+            </figure>
+    </li>
 }
