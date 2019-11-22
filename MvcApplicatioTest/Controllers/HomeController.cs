@@ -1,4 +1,4 @@
-using MvcApplicatioTest.Models;
+﻿using MvcApplicatioTest.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +13,12 @@ namespace MvcApplicatioTest.Controllers
         //
         // GET: /Home/
 
+        private const int BlockSize = 5;
+
         public ActionResult Index()
         {
-            int BlockSize = 5;
-            DataManager dm = new DataManager();
-            var photos = DataManager.GetPhotos(BlockSize);
+            DataManagerFlickr dm = new DataManagerFlickr();
+            var photos = DataManagerFlickr.GetPhotos(BlockSize);
             return View(photos);
         }
 
@@ -30,16 +31,11 @@ namespace MvcApplicatioTest.Controllers
         [HttpPost]
         public ActionResult InfinateScroll(int BlockNumber)
         {
-            ////////////////// THis line of code only for demo. Needs to be removed ///////////////
-            //System.Threading.Thread.Sleep(3000);
-            //////////////////////////////////////////////////////////////////////////////////////////
-
-            int BlockSize = 5;
-            var photos = DataManager.GetPhotos(BlockSize);
-
-            string jphotos = RenderPartialViewToString("ListPhotos", photos);
-
-            return Json(jphotos);
+            var photos = DataManagerFlickr.GetPhotos(BlockSize);
+            JsonModel jsonModel = new JsonModel();
+            jsonModel.NoMoreData = photos.Count < BlockSize;
+            jsonModel.HTMLString = RenderPartialViewToString("ListPhotos", photos);
+            return Json(jsonModel);
         }
 
         protected string RenderPartialViewToString(string viewName, object model)
