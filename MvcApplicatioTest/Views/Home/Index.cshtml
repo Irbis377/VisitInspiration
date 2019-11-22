@@ -1,7 +1,9 @@
-@model List<MvcApplicatioTest.Models.PhotoFlickr>
+﻿@model List<MvcApplicatioTest.Models.PhotoFlickr>
 @{
     ViewBag.Title = "TEST";
+
 }
+
 <head>
     <meta name="author" content="irbis377" />
     <meta charset="UTF-8" />
@@ -19,11 +21,10 @@
 </div>
 
 <div class="content">
-    <ul id="photoListDiv" class="grid cs-style-3">
-        @{Html.RenderAction("ListPhotos", "Home", new { Model = Model });}
-    </ul>
-
-
+        <ul id="photoListDiv"  class="grid cs-style-3">
+            @{Html.RenderAction("ListPhotos", "Home", new { Model = Model });}
+        </ul>  
+    
     @* show gif for loading in the end of page *@
     <div id="loadingDiv" style="text-align: center; display: none; margin-bottom: 20px;">
         <img alt="Loading" src="@Url.Content("~/Content/Images/ajax-loader.gif")" />
@@ -35,25 +36,27 @@
 
     @*Infinate Scroll starts from second block*@
     <script type="text/javascript">
-        var BlockNumber = 2;
-        var inProgress = false;
+    var BlockNumber = 2;
+    var NoMoreData = false;
+    var inProgress = false;
 
-        $(window).scroll(function () {
-            if ($(window).scrollTop() == $(document).height() - $(window).height() && !inProgress) {
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height() && !inProgress) {
 
-                inProgress = true;
-                $("#loadingDiv").show();
-
-                $.post("@Url.Action("InfinateScroll", "Home")", { "BlockNumber": BlockNumber },
+            inProgress = true;
+            $("#loadingDiv").show();
+            
+            $.post("@Url.Action("InfinateScroll", "Home")", { "BlockNumber": BlockNumber },
                         function (data) {
 
                             BlockNumber = BlockNumber + 1;
+                            NoMoreData = data.NoMoreData;
                             $("#photoListDiv").append(data.HTMLString);
                             $("#loadingDiv").hide();
                             inProgress = false;
                         });
-            }
-        });
+        }
+    });
     </script>
 
     <script src="js/toucheffects.js"></script>

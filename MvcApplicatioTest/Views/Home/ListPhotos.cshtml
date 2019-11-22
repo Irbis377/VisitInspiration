@@ -1,7 +1,11 @@
-@model List<MvcApplicatioTest.Models.PhotoFlickr>
+﻿@model List<MvcApplicatioTest.Models.PhotoFlickr>
 
 @foreach (var item in Model)
 {
+    string from = "MOW"; //позже напилить возможные коды откуда вылет и сделать сверху выбор в селекторе 
+    string destination = "NZ"; //@item.geo 
+    string date = DateTime.Today.AddDays(1).ToString("yyyy'-'MM'-'dd");
+    string query = "https://www.aviasales.ru/map?adults=2&children=0&infants=0&origin_iata="+from+"&destination_iata="+destination+ "&depart_date=" + date;
     <li>
             <figure id=@item.PhotoId>
                 <img src=@item.MediumUrl alt=@item.Title>
@@ -9,7 +13,8 @@
                     <h3>@item.Title</h3> 
                     <span>@item.OwnerName</span>
                     <p class="description">@item.DateTaken</p>
-                    <a href="#">Visit!</a>
+                    <p class="middleprice">price 0.00</p>
+                    <a href=@query target="_blank">Visit!</a>
                 </figcaption>
             </figure>
     </li>
